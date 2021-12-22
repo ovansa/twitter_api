@@ -6,6 +6,7 @@ import Tweet from '../models/Tweet.js';
 // @routes      POST /api/v1/tweets
 // @access      Public
 const createTweet = asyncHandler(async (req, res, next) => {
+  req.body.createdBy = req.user.id;
   const tweet = await Tweet.create(req.body);
   res.status(200).json({ success: true, tweet });
 });

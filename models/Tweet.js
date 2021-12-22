@@ -7,6 +7,11 @@ const TweetSchema = new mongoose.Schema({
     trim: true,
     maxlength: [70, 'Message cannot have more than 50 characters'],
   },
+  createdBy: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: true,
+  },
 });
 
 export default mongoose.model('Tweet', TweetSchema);
