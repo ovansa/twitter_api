@@ -5,7 +5,7 @@ import User from '../models/User.js';
 // @desc        Register user
 // @routes      POST /api/v1/auth/register
 // @access      Public
-const registerUser = asyncHandler(async (req, res, next) => {
+export const registerUser = asyncHandler(async (req, res, next) => {
   const { name, email, password, role } = req.body;
   const user = await User.create({ name, email, password, role });
 
@@ -15,7 +15,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
 // @desc        Login user
 // @routes      POST /api/v1/auth/login
 // @access      Public
-const loginUser = asyncHandler(async (req, res, next) => {
+export const loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return next(new ErrorResponse('Please provide an email and password', 400));
@@ -34,7 +34,31 @@ const loginUser = asyncHandler(async (req, res, next) => {
   sendTokenResponse(user, 200, res);
 });
 
-export { loginUser, registerUser };
+// @desc        Get current user
+// @routes      GET /api/v1/auth/me
+// @access      Private
+export const getCurrentUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user);
+
+  res.status(200).json({ success: true, data: user });
+});
+
+// @desc        Forgot Password
+// @routes      GET /api/v1/auth/forgotpassword
+// @access      Public
+export const forgotPassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    return next(new ErrorResponse(`No user with email`, 404));
+  }
+
+  const resetToken = user.getResetPasswordToken();
+
+  await user.save({ validateBeforeSave: false });
+
+  res.status(200).json({ success: true, data: user });
+});
 
 // Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
@@ -56,12 +80,3 @@ const sendTokenResponse = (user, statusCode, res) => {
     .cookie('token', token, options)
     .json({ success: true, token });
 };
-
-// @desc        Register user
-// @routes      POST /api/v1/auth/register
-// @access      Public
-export const getCurrentUser = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user);
-
-  res.status(200).json({ success: true, data: user });
-});
