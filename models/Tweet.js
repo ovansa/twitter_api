@@ -1,17 +1,24 @@
 import mongoose from 'mongoose';
 
 const TweetSchema = new mongoose.Schema({
-  message: {
+  text: {
     type: String,
-    required: [true, 'Message is required'],
+    required: [true, 'Text is required'],
     trim: true,
-    maxlength: [70, 'Message cannot have more than 50 characters'],
+    maxlength: [70, 'Tweet text cannot have more than 50 characters'],
   },
-  createdBy: {
+  author_id: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
     required: true,
   },
+  geo: {},
 });
 
 export default mongoose.model('Tweet', TweetSchema);
+
+/**
+ * TODO: Add geo coordinates to tweet model
+ * TODO: created_at ISO 8601 date
+ * TODO: attachments
+ */

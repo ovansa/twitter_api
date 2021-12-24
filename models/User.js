@@ -68,3 +68,9 @@ UserSchema.methods.getResetPasswordToken = async function () {
 };
 
 export default mongoose.model('User', UserSchema);
+
+/**
+ * Add username, description, profileImageUrl, verified
+ * URL - https://developer.twitter.com/en/docs/twitter-api/data-dictionary/object-model/user
+ * URL - https://developer.twitter.com/en/docs/twitter-api/data-dictionary/object-model/tweet
+ */
