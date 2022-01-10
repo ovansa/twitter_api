@@ -17,6 +17,22 @@ const UserSchema = new mongoose.Schema({
       'Please add a valid email',
     ],
   },
+  username: {
+    type: String,
+    required: [true, 'Username is required'],
+    unique: true,
+  },
+  description: {
+    type: String,
+    maxlength: [50, 'Description cannot be more than 50 characters'],
+  },
+  profileImageUrl: {
+    type: String,
+  },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
   role: {
     type: String,
     enum: ['user', 'creator', 'viewer'],
