@@ -1,32 +1,11 @@
-import express from 'express';
 import dotenv from 'dotenv';
-import morgan from 'morgan';
 import colors from 'colors';
-import cookieParser from 'cookie-parser';
-import errorHandler from './middleware/error.js';
 import { connectDB } from './config/db.js';
-
-import tweets from './routes/tweets.js';
-import auth from './routes/auth.js';
+import app from './app.js';
 
 dotenv.config({ path: './config/config.env' });
 
 connectDB();
-
-const app = express();
-
-app.use(express.json());
-
-app.use(cookieParser());
-
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
-
-app.use('/api/v1/tweets', tweets);
-app.use('/api/v1/auth', auth);
-
-app.use(errorHandler);
 
 const PORT = process.env.PORT;
 
