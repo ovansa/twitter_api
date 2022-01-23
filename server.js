@@ -9,10 +9,6 @@ connectDB();
 
 const PORT = process.env.PORT;
 
-app.get('/', (req, res) => {
-  res.status(400).json({ success: false });
-});
-
 const server = app.listen(
   PORT,
   console.log(
